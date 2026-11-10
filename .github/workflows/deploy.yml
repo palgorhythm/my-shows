@@ -29,6 +29,8 @@ jobs:
       - run: npm ci
       - name: Scrape venue and label calendars
         run: npm run scrape
+        env:
+          PREVIOUS_FEED: https://palgorhythm.github.io/my-shows/events.json
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

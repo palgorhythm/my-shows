@@ -238,6 +238,22 @@ async function main() {
     delete ev.labels;
     return fits;
   });
+
+  // If a site could not be read this time, keep what the last published feed had for it.
+  const failedIds = new Set(results.filter((r) => !r.ok).map((r) => r.src.id));
+  if (failedIds.size && process.env.PREVIOUS_FEED) {
+    try {
+      const res = await fetch(process.env.PREVIOUS_FEED, { signal: AbortSignal.timeout(20000) });
+      const prev = res.ok ? await res.json() : { events: [] };
+      const todayIso = now.toISODate();
+      const have = new Set(events.map((e) => e.id));
+      const carried = (prev.events || []).filter((e) => failedIds.has(e.sourceId) && e.date >= todayIso && !have.has(e.id));
+      events.push(...carried);
+      console.log(`carried ${carried.length} events forward for: ${[...failedIds].join(', ')}`);
+    } catch (err) {
+      console.log(`could not read the previous feed: ${err.message}`);
+    }
+  }
   events.sort((a, b) => a.start.localeCompare(b.start) || a.title.localeCompare(b.title));
 
   const out = {

@@ -27,8 +27,19 @@ export async function fetchText(url, { headers = {}, timeoutMs = 25000, retries 
 }
 
 export async function fetchJson(url, opts = {}) {
-  const text = await fetchText(url, { ...opts, headers: { Accept: 'application/json', ...(opts.headers || {}) } });
-  return JSON.parse(text);
+  const tries = (opts.retries ?? 1) + 1;
+  let lastErr;
+  for (let attempt = 0; attempt < tries; attempt++) {
+    try {
+      const text = await fetchText(url, { ...opts, retries: 0, headers: { Accept: 'application/json', ...(opts.headers || {}) } });
+      return JSON.parse(text);
+    } catch (err) {
+      // a challenge page instead of JSON is often gone a few seconds later
+      lastErr = err;
+      if (attempt < tries - 1) await new Promise((r) => setTimeout(r, 4000));
+    }
+  }
+  throw lastErr;
 }
 
 export async function fetchDom(url, opts) {

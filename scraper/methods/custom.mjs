@@ -36,6 +36,7 @@ export async function dublab(src) {
       venue: ev.location_name,
       city: [ev.location_address1, ev.location_city].filter(Boolean).join(', '),
       description: ev.meta?.description || ev.content || '',
+      image: ev.meta?.image,
     });
   }
   return out;
@@ -59,6 +60,7 @@ export async function inSheepsClothing(src) {
       start: date,
       url: link.attr('href') || src.url,
       venue: 'In Sheep\'s Clothing',
+      image: $(art).find('img').first().attr('data-src') || $(art).find('img').first().attr('src'),
       city: address,
       description: address,
     });

@@ -170,7 +170,14 @@ function buildCard(ev) {
     ev.price ? ' ' + ev.price : null,
   ]);
 
+  let picture = null;
+  if (ev.image) {
+    picture = el('img', { className: 'poster', src: ev.image, alt: '', loading: 'lazy', referrerPolicy: 'no-referrer', draggable: false });
+    picture.onerror = () => picture.remove();
+  }
+
   const body = el('div', { className: 'window-body' }, [
+    picture,
     el('h2', { textContent: ev.title }),
     meta,
     ev.description ? el('p', { className: 'desc', textContent: ev.description }) : null,
@@ -230,6 +237,7 @@ function renderSaved() {
   const today = todayLA();
   const upcoming = saved.filter((ev) => ev.date >= today);
   $('saved-count').textContent = upcoming.length;
+  $('saved-count-top').textContent = upcoming.length;
 
   const list = $('saved-list');
   list.replaceChildren();
@@ -393,6 +401,7 @@ function wire() {
   $('save-btn').onclick = toggleSave;
   attachTouch($('stack'));
   $('tb-saved').onclick = () => toggleWindow('saved-window');
+  $('saved-btn').onclick = () => toggleWindow('saved-window');
   $('tb-sources').onclick = () => { renderSources(); toggleWindow('sources-window'); };
   $('help-btn').onclick = () => toggleWindow('help-window');
   $('tb-home').onclick = () => toggleWindow('help-window', false);

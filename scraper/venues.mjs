@@ -92,7 +92,7 @@ export const VENUES = [
     id: 'lodge-room', name: 'Lodge Room', neighborhood: 'Highland Park', genreFit: 'mixed',
     url: 'https://www.lodgeroomhlp.com/',
     endpoint:
-      'https://www.lodgeroomhlp.com/wp-json/wp/v2/shows?per_page=100&_fields=id,title,link,acf.date_and_time_of_show,acf.genre,acf.show_description',
+      'https://www.lodgeroomhlp.com/wp-json/wp/v2/shows?per_page=100&_fields=id,title,link,acf.date_and_time_of_show,acf.genre,acf.show_description,acf.show_image.url,acf.show_image.sizes.large',
     read: lodgeRoom,
   }),
   venue({

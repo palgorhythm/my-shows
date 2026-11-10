@@ -69,6 +69,14 @@ function normalize(raw, src, now) {
   }
   if (src.skip && src.skip.test(title)) return null;
 
+  let image = '';
+  try {
+    const abs = raw.image ? new URL(String(raw.image).trim(), raw.url || src.url) : null;
+    if (abs && /^https?:$/.test(abs.protocol)) image = abs.href.replace(/^http:/, 'https:');
+  } catch {
+    // not a usable address: leave the card without a picture
+  }
+
   const date = dt.toISODate();
   const noTime = dt.hour === 0 && dt.minute === 0;
   return {
@@ -81,6 +89,7 @@ function normalize(raw, src, now) {
     neighborhood: src.kind === 'venue' ? src.neighborhood || '' : '',
     url: raw.url || src.url,
     price: raw.price ? cleanTitle(String(raw.price)) : '',
+    image,
     description,
     sourceId: src.id,
     sourceName: src.name,
@@ -149,6 +158,7 @@ function dedupe(events) {
       dupe.labels = [...new Set([...dupe.labels, ...ev.labels])];
       if (!dupe.description && ev.description) dupe.description = ev.description;
       if (!dupe.price && ev.price) dupe.price = ev.price;
+      if (!dupe.image && ev.image) dupe.image = ev.image;
       if (!dupe.time && ev.time) { dupe.time = ev.time; dupe.start = ev.start; }
       continue;
     }

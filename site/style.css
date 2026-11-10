@@ -3,6 +3,9 @@ html, body {
   margin: 0;
 }
 
+/* phone browsers: fit the visible area so the taskbar is never under the address bar */
+body { height: 100dvh; }
+
 body {
   background: #008080;
   display: flex;
@@ -95,6 +98,7 @@ body {
 
 .day-tools {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 6px;
   margin: 6px 0 8px;
@@ -129,6 +133,19 @@ body {
   min-height: 0;
   overflow: auto;
   margin: 6px;
+}
+
+.card .poster {
+  display: block;
+  width: 100%;
+  max-height: 38%;
+  min-height: 90px;
+  object-fit: cover;
+  margin: 0 0 8px;
+  box-shadow: inset -1px -1px #fff, inset 1px 1px grey;
+  border: 2px inset #dfdfdf;
+  box-sizing: border-box;
+  background: #808080;
 }
 
 .card h2 {

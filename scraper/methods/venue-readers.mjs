@@ -55,6 +55,7 @@ export async function dice(src) {
           venue: ev.venue,
           price: prices.length ? money(Math.min(...prices)) : undefined,
           description: ev.raw_description || ev.description || '',
+          image: ev.event_images?.landscape || ev.event_images?.square || [].concat(ev.images || [])[0],
           tags: [...(ev.genre_tags || []), ...(ev.type_tags || [])].join(' '),
         });
       }
@@ -82,6 +83,7 @@ export async function diceVenuePage(src) {
         url: ev.perm_name ? `https://dice.fm/event/${ev.perm_name}` : src.url,
         price: typeof ev.price?.amount === 'number' ? money(ev.price.amount) : undefined,
         description: ev.about?.description || '',
+        image: ev.images?.landscape || ev.images?.square,
       });
     }
   }
@@ -107,6 +109,7 @@ export async function wixEvents(src) {
           url: `${new URL(src.endpoint).origin}/${src.eventPath}/${ev.slug}`,
           price: low || undefined,
           description: ev.description || ev.about || '',
+          image: ev.mainImage?.url,
         });
       }
     }
@@ -156,6 +159,7 @@ export async function catalina(src) {
       start: withClock(inferYear(month, day), show),
       url: link.attr('href') || src.url,
       price: s.find('.tw-price').first().text().trim() || undefined,
+      image: s.find('img').first().attr('data-src') || s.find('img').first().attr('src'),
     });
   });
   return out;
@@ -174,6 +178,7 @@ export async function rhythmRoom(src) {
         start: it.structuredContent?.startDate ?? it.startDate,
         url: it.fullUrl ? new URL(it.fullUrl, src.url).href : src.url,
         description: it.excerpt || '',
+        image: it.assetUrl,
       });
     }
   }
@@ -203,6 +208,7 @@ export async function lodgeRoom(src) {
         start: dt,
         url: post.link,
         description: post.acf?.show_description || '',
+        image: post.acf?.show_image?.sizes?.large || post.acf?.show_image?.url,
         tags: post.acf?.genre ? String(post.acf.genre) : '',
       });
     }
@@ -236,6 +242,7 @@ export async function blueNote(src) {
           title: link.text().trim(),
           start: withClock(base, times[0]),
           url: link.attr('href') || src.url,
+          image: $(wrap).find('.the-image').attr('data-src'),
           description: [times.length > 1 ? 'Sets at ' + times.join(' and ') : '', $(wrap).find('.venue').text().trim()]
             .filter(Boolean).join('. '),
         });
@@ -259,6 +266,7 @@ export async function bostonCourt(src) {
       title,
       start: withClock(inferYear(monthNum(m[1]), Number(m[2])), when.split(',').slice(1).join(',')),
       url: p.find('a.d-block').attr('href') || src.url,
+      image: p.find('img').first().attr('src'),
       description: p.find('.event-content p').first().html() || '',
     });
   });
@@ -284,6 +292,7 @@ export async function capUcla(src) {
       start: hasTime ? local : local.slice(0, 10),
       url: new URL(r.attr('href'), src.endpoint).href,
       venue: field('venue'),
+      image: r.find('img').first().attr('src'),
       description: [field('venue'), field('genre')].filter(Boolean).join('. '),
       tags: field('genre'),
     });
@@ -307,6 +316,7 @@ export async function redcat(src) {
       title: [artist, name].filter(Boolean).join(': '),
       start: inferYear(monthNum(m[1]), Number(m[2])),
       url: new URL(c.attr('href'), src.endpoint).href,
+      image: c.find('img').first().attr('src'),
       description: `${metier}. ${c.find('.field--name-field-dates').first().text().trim()}`,
       tags: metier,
     });

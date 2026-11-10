@@ -25,6 +25,7 @@ export async function squarespaceJson(src) {
         venue: loc.addressTitle || undefined,
         city: loc.addressLine2 || undefined,
         description: it.excerpt || it.body || '',
+        image: it.assetUrl,
         // full text, used only to decide whether a touring show is in LA
         where: [it.title, it.excerpt, it.body, ...String(it.body || '').matchAll(/href="([^"]+)"/g)].map((x) => (Array.isArray(x) ? x[1] : x)).filter(Boolean).join(' '),
       });
@@ -83,6 +84,7 @@ export function ldToRaw(ld, src) {
     city: addr.addressLocality || (typeof loc.address === 'string' ? loc.address : undefined),
     price,
     description: ld.description || '',
+    image: [].concat(ld.image || [])[0]?.url || [].concat(ld.image || [])[0],
   };
 }
 
@@ -122,6 +124,7 @@ export async function tribeRest(src) {
         venue: venue?.venue,
         city: venue?.city,
         price: ev.cost || undefined,
+        image: ev.image?.url,
         description: ev.excerpt || ev.description || '',
       });
     }

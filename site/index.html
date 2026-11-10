@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>My Shows</title>
+  <meta name="description" content="Small jazz, creative and experimental shows in Los Angeles, one day at a time.">
+  <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.20/dist/98.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="desktop">
+    <section class="window" id="main-window">
+      <div class="title-bar">
+        <div class="title-bar-text">My Shows: Los Angeles</div>
+        <div class="title-bar-controls">
+          <button aria-label="Help" id="help-btn"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <div class="day-nav">
+          <button id="prev-day" aria-label="Previous day">&#9664;</button>
+          <div class="day-label">
+            <strong id="day-name">Loading...</strong>
+            <span id="day-count"></span>
+          </div>
+          <button id="next-day" aria-label="Next day">&#9654;</button>
+        </div>
+        <div class="day-tools">
+          <button id="today-btn">Today</button>
+          <input type="date" id="date-picker" aria-label="Pick a date">
+        </div>
+
+        <div id="stack" aria-live="polite"></div>
+
+        <div class="swipe-buttons">
+          <button id="prev-show" title="Up arrow" aria-label="Previous show">&#9650;</button>
+          <button id="save-btn" title="Enter">&#9829; Save</button>
+          <button id="next-show" title="Down arrow" aria-label="Next show">&#9660;</button>
+        </div>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field" id="status-left">Enter saves a show</p>
+        <p class="status-bar-field" id="status-right"></p>
+      </div>
+    </section>
+
+    <section class="window hidden" id="saved-window">
+      <div class="title-bar">
+        <div class="title-bar-text">Saved Shows</div>
+        <div class="title-bar-controls">
+          <button aria-label="Close" data-close="saved-window"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <ul class="tree-view" id="saved-list"></ul>
+      </div>
+    </section>
+
+    <section class="window hidden" id="sources-window">
+      <div class="title-bar">
+        <div class="title-bar-text">Sources</div>
+        <div class="title-bar-controls">
+          <button aria-label="Close" data-close="sources-window"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <p id="sources-updated"></p>
+        <ul class="tree-view" id="sources-list"></ul>
+      </div>
+    </section>
+
+    <section class="window hidden" id="help-window">
+      <div class="title-bar">
+        <div class="title-bar-text">About My Shows</div>
+        <div class="title-bar-controls">
+          <button aria-label="Close" data-close="help-window"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <p>Small jazz, creative and experimental shows around Los Angeles, pulled straight from venue and label websites a few times a day.</p>
+        <p>On a keyboard: left and right change the day, up and down move between that day's shows, and Enter saves the one you're looking at.</p>
+        <p>On a phone: swipe sideways to change the day, swipe up and down to move between shows, and tap Save.</p>
+        <p>Everything you save stays in this browser only.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer id="taskbar">
+    <button id="tb-home" class="tb-btn"><strong>My Shows</strong></button>
+    <button id="tb-saved" class="tb-btn">&#9829; Saved (<span id="saved-count">0</span>)</button>
+    <button id="tb-sources" class="tb-btn">Sources</button>
+    <div class="tray">
+      <button id="mute-btn" aria-label="Toggle sound" title="Sound">&#128266;</button>
+      <span id="clock"></span>
+    </div>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

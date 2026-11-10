@@ -1,0 +1,20 @@
+{
+  "name": "my-shows",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A swipeable feed of small jazz, creative and experimental shows in Los Angeles.",
+  "scripts": {
+    "scrape": "node scraper/index.mjs",
+    "scrape:one": "node scraper/index.mjs --only",
+    "serve": "npx --yes serve site -l 4173"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "luxon": "^3.5.0",
+    "node-ical": "^0.20.1"
+  }
+}
